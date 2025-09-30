@@ -1,0 +1,23 @@
+import java.util.*;
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        Map<Character, Integer> map = new HashMap<>();
+        int left = 0, maxCount = 0, res = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            
+            maxCount = Math.max(maxCount, map.get(c));
+
+            while ((right - left + 1) - maxCount > k) {
+                char d = s.charAt(left);
+                map.put(d, map.get(d) - 1);
+                left++;
+            }
+            res = Math.max(res, right - left + 1);
+        }
+        return res;
+    }
+}
