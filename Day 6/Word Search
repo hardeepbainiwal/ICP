@@ -1,0 +1,36 @@
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        int m = board.length;
+        int n = board[0].length;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    boolean[][] visited = new boolean[m][n];
+                    if (sol(board, i, j, m, n, word, 0, visited)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean sol(char[][] board, int cr, int cc, int er, int ec, String word, int idx, boolean[][] visited) {
+        if (idx == word.length()) return true;
+        if (cr < 0 || cc < 0 || cr >= er || cc >= ec) return false;
+        if (visited[cr][cc]) return false;
+
+        if (board[cr][cc] == word.charAt(idx)) {
+            visited[cr][cc] = true;
+
+            boolean up = sol(board, cr - 1, cc, er, ec, word, idx + 1, visited);
+            boolean down = sol(board, cr + 1, cc, er, ec, word, idx + 1, visited);
+            boolean left = sol(board, cr, cc - 1, er, ec, word, idx + 1, visited);
+            boolean right = sol(board, cr, cc + 1, er, ec, word, idx + 1, visited);
+
+            if (up || down || left || right) return true;
+
+            visited[cr][cc] = false;
+        }
+        return false;
+    }
+}
